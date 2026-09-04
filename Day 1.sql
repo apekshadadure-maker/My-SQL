@@ -28,3 +28,8 @@ select *from employee;
 
 -- to display records of specific column from table --
 select emp_id from employee;
+
+create database mysql
+
+
+  

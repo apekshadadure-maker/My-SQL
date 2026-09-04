@@ -24,5 +24,4 @@ select*from Customers;
 
 select FirstName,Email,AccountCreationDate
 from Customers;
-bu
 

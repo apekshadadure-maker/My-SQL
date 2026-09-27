@@ -451,6 +451,195 @@ from company;
      min(salary) as lowest_salary
  from company;    
   
+  use n325_db;
+drop table if exists customers;
+create table customers (
+   customer_id int primary key,
+   customer_name varchar(50),
+   city varchar(50)
+   );
+   
+   insert into customers
+   values
+   (101,'amit','nagpur'),
+   (102,'priya','pune'),
+   (103,'rahul','mumbai'),
+   (104,'sneha','delhi'),
+   (105,'vikas','nashik');
+   
+   create table orders (
+      order_id int primary key,
+      customer_id int,
+      product varchar(50),
+      amount decimal(10,2)
+      );
+      truncate table orders;
+      insert into orders
+      values
+      (1,101,'laptop',55000),
+      (2,102,'mobile',25000),
+      (3,103,'mouse',4500),
+      (4,104,'monitor',3000),
+      (5,106,'keyword',12000),
+      (6,105,'printer',15000);
+      
+      select x.*,y.*
+      from customers as x
+      inner join orders as y
+      on customers.customer_id = orders.customer_id;
+      
+      select x.*,y.amount,y.product
+      from customers as x
+      inner join orders as y
+      on x.customer_id = y.customer_id;
+      
+      select 
+      c.customer_id,
+      c.customer_name,
+      o.product,
+      o.amount
+    from customers c
+    inner join orders o
+    on c.customer_id = o.customer_id;
+    
+    select 
+      c.customer_id,
+      c.customer_name,
+      o.product,
+      o.amount
+    from customers c
+    left join orders o
+    on c.customer_id = o.customer_id;
+    
+     select 
+      c.customer_id,
+      c.customer_name,
+      o.product,
+      o.amount
+    from customers c
+    right join orders o
+    on c.customer_id = o.customer_id;
+    
+    select
+    c.*,
+    o.*
+    from customers c
+    cross join orders o;
+ 
+# self join:
+ -- 1)a self join means joining a table with itself.
+ -- 2)it is useful with records with in the 
+create table employee(
+ employee_id int primary key,
+ employee_name varchar(50),
+ manager_id int
+ );
+ 
+ insert into employee
+ values
+ (1,'amit',null), #'amit'is a itself manager
+ (2,'priya',1),
+ (3,'rahul',1),
+ (4,'sneha',2),
+ (5,'rocky',3);
+
+select 
+  e.employee_name as employee,
+  e.employee_name as manager
+  from employee e
+  left join employee m
+  on e.manager_id=m.employee_id;
+  
+  show tables;
+  
+  select * from customers;
+  ------------------- self join ----------------------
+  create table employee_name(
+    emp_id int primary key, emp_name varchar(50),department varchar(100)
+    );
+    
+desc employee_name;
+
+insert into employee_name values
+(1,'rahul','IT'),(2,'priya','HR'),(3,'hitesh','IT'),(4,'gaurov','HR'),(5,'amit','finance');
+
+select * from employee_name;
+
+select e_n1.emp_name,e_n2.emp_name,e_n1.department,e_n2.department
+from employee_name e_n1
+join employee_name e_n2
+on e_n1.department=e_n2.department;
+
+# where clause is used to pass the condition on records or rows 
+select 
+   c.*,o.product,o.amount
+   from customers c
+   inner join orders o
+   on c.customer_id = o.customer_id
+   where o.amount>12000;
+   
+   
+   select
+      c.*,o.product,o.amount
+   from customers c
+   inner join orders o
+   on c.customer_id = o.customer_id where o.product in('laptop','monitor') and c.city='nagpur';
+
+
+
+   select 
+    c.*,sum(o.amount)
+   from customers c
+   inner join orders o
+   on c.customer_id = o.customer_id group by o.customer_id,c.customer_id,o.product;
+   
+   
+select sum(amount) from orders group by customer_id;
+
+# having clause is used to filter the groups
+-- suppose we want to find total amount spent by each customers--
+
+select
+c.customer_name,c.city,
+sum(o.amount) as 'total_amount_spent'
+from customers c
+inner join orders o
+on c.customer_id =o.customer_id
+group by c.customer_id,c.customer_name 
+having c.city in ('pune','nagpur','mumbai') order by c.city desc limit 1 offset 1;
+
+-- find customers whose total purchase is greater than ₹30,000
+
+select
+c.customer_name,
+sum(o.amount) as total_amount
+from customers c
+inner join orders o
+on c.customer_id =o.customer_id
+group by c.customer_id,c.customer_name 
+having sum(o.amount) > 30000;
+
+-- we can join more than 2 table
+create table products(prod_id varchar(40) primary key,prod_name varchar(50),manufactured_at varchar(100));
+
+truncate table products ;
+insert into products values (501,'laptop','usa'),(502,'mobile','south korea'),(503,'keyword','china'),
+(504,'monitor','taiwan');
+
+select *from products;
+select *from orders;
+
+select
+   c.*,
+   o.*
+from customers c
+inner join orders o
+   on c.customer_id = o.customer_id;   
+
+
+
+
+  
    
   
   
